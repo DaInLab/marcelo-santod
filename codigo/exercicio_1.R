@@ -1,98 +1,55 @@
-# Instalando biblioteca readxl para importar para o R arquivos com extensão .xls ou .xlsx.
-if (!("readxl") %in% installed.packages()) install.packages("readxl")
+# Lista de Exercicios TOPICO 8
+# Disciplina Ciencia de Dados 2o Semestre 2022
+# Professor : Joao Pedro Albino
+# Aluno : Marcelo Jose dos Santos
+# Versao 2 - 27/11/2022
+# Workspace : D:/GoogleDrive/Mestrado_unesp/2022_02_CIENCIA_DE_DADOS/marcelo-santos
 
-# Carregando a biblioteca
+# Exercicio 1
+# 1 - As taxas de juros recebidas por 10 ações durante um certo período foram (medidas em   porcentagens) 
+#     2,59; 2,64; 2,60; 2,62; 2,57; 2,61; 2,50; 2,63; 2,64 (Os dados estão na planilha Excel “exercicio1.xls”).
+#     Faça um programa em R para calcular e gerar os gráficos da média, da mediana, do desvio padrão, 
+#     da variância, do valor mínimo, do valor máximo e dos quartis Q1 e Q3.
+
+# imports
+if (!("readxl") %in% installed.packages()) 
+    install.packages("readxl")
 library(readxl)
 
-# Importando o arquivo do exercício 1
-df.ex1 <- read_excel("./dados/exercicio1.xls",skip = 1, col_names = "tx.juros", col_types = c("numeric"))
+# Fonte de Dados
+df = read_excel("./dados/exercicio1.xls", skip = 1, col_names = "taxa_juros", col_types = c("numeric"))
 
-# calculando a media
-ex1.media <- mean(df.ex1$tx.juros)
-print(paste("Média das taxas de juros:", ex1.media))
+# Media
+media =mean(df$taxa_juros)
+print(paste("Média Taxas de Juros :", media))
 
-# calculando a mediana
-ex1.mediana = median(df.ex1$tx.juros)
-print(paste("Médiana das taxas de juros:", ex1.mediana))
+# Mediana
+mediana =median(df$taxa_juros)
+print(paste("Mediana Taxas de Juros :", mediana))
 
-# calculando o desvio padrão
-ex1_desviop = round(sd(df.ex1$tx.juros),6)
-print(paste("Desvio Padrão das taxas de juros:", ex1_desviop))
+# Desvio Padrao
+desvio_padrao = round(sd(df$taxa_juros),6)
+print(paste("Desvio Padrão Taxas de juros:", desvio_padrao))
 
-# calculando a variância
-ex1_varianca <- round(var(df.ex1$tx.juros),6)
-print(paste("Variância das taxas de juros:", ex1_varianca))
+# Variancia
+variancia = round(var(df$taxa_juros),6)
+print(paste("Variância Taxas de juros:", desvio_padrao))
 
-# valor mínimo
-ex1.minimo <- min(df.ex1$tx.juros)
-print(paste("Valor mínimo das taxas de juros:", ex1.minimo))
+# Valor Minimo
+valor_min = round(min(df$taxa_juros),2)
+print(paste("Valor Minimo Taxas de Juros : ", valor_min))
 
-# valor máximo
-ex1.maximo <- max(df.ex1$tx.juros)
-print(paste("Valor máximo das taxas de juros:", ex1.maximo))
+# Valor Maximo
+valor_max = round(max(df$taxa_juros),2)
+print(paste("Valor Máximo Taxas de Juros : ", valor_max))
 
-# calculando os quartis
-ex1.quartis <- round(quantile(df.ex1$tx.juros),2)
-q1 <- ex1.quartis[2]
-print(paste("Q1:", q1))
-
-q3 <- ex1.quartis[4]
-print(paste("Q3:", q3))
-
-# O melhor gráfico para representar os valores é o do "boxplot"!
-boxplot(df.ex1)
-
-# Uma versão mais "sofisticada"!
-boxplot(df.ex1$tx.juros,
-        main = "Taxas de Juros Recebidas em Ações",
-        xlab = "Taxas de Juros",
-        ylab = "Ações",
-        col = "orange",
-        border = "brown",
-        horizontal = TRUE,
-        notch = T
-)
-
-# Uma versão dois, com retas indicando os pontos no gráfico
-# get quartile in r code (single line)
-media = round(mean(df.ex1$tx.juros),2)
-print(media)
-mediana = round(median(df.ex1$tx.juros),2)
-print(mediana)
-menorv = round(min(df.ex1$tx.juros),2)
-print(menorv)
-maiorv = round(max(df.ex1$tx.juros),2)
-print(maiorv)
-
-quartiz = round(quantile(df.ex1$tx.juros, prob=c(.25,.5,.75)),2)
-quartiz
-# 25%  50%  75% 
-#2.59 2.61 2.63 
-
-round(summary(df.ex1$tx.juros),2)
-#Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#2.50    2.59    2.61    2.60    2.63    2.64 
-
-boxplot(df.ex1$tx.juros)
-
-abline(a = media, b = 0L, h = NULL, v = T)
-abline(a = mediana, b = 0L, h = NULL, v = T)
-abline(a = menorv, b = 0L, h = NULL, v = T)
-abline(a = maiorv, b = 0L, h = NULL, v = T)
-abline(a = quartiz[1], b = 0L, h = NULL, v = T)
-abline(a = quartiz[3], b = 0L, h = NULL, v = T)
+# Quartis Q1 e Q3
+quartiz = round(quantile(df$taxa_juros, prob=c(.25,.5,.75)),2)
+print(paste("Quartiz Taxas de Juros Q1 : ", quartiz[1]))
+print(paste("Quartiz Taxas de Juros Q3 : ", quartiz[3]))
 
 
-# Experiências ....
 
-#Outro gráfico
-plot(df.ex1$tx.juros, main = "Taxas de Juros Recebidas em Ações",
-     xlab = "Número da Ação",
-     ylab = "Taxa de Juros")
-barplot(table(df.ex1$tx.juros))
 
-plot(df.ex1$tx.juros)
-hist(df.ex1$tx.juros)
-lines(df.ex1$tx.juros)
 
-stripchart(df.ex1$tx.juros, vertical = T)
+
